@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_bandeau">#EEB9A9</color>
+    <color name="color_volet">#000000</color>
+    <color name="colorAccent">#73554B</color>
+
+</resources>
