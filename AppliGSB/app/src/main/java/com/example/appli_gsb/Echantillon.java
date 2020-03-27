@@ -2,29 +2,21 @@ package com.example.appli_gsb;
 
 public class Echantillon {
 
-
     protected String code;
-
     protected String libelle;
+    protected String quantiteStock;
 
-    protected int quantiteStock;
+    public Echantillon(){}
 
-
-    public Echantillon(String code, String libelle, int qteStock){
+    public Echantillon(String code, String libelle, String qteStock){
         super();
         this.code = code;
         this.libelle = libelle;
         this.quantiteStock = qteStock;
     }
 
-    public Echantillon() {
 
-    }
-
-    public String getCode(){
-
-        return code;
-    }
+    public String getCode(){ return code; }
 
     public void setCode(String code){
         this.code = code;
@@ -38,11 +30,11 @@ public class Echantillon {
         this.libelle = libelle;
     }
 
-    public int getQuantiteStock(){
+    public String getQuantiteStock(){
         return quantiteStock;
     }
 
-    public void setQuantiteStock(int quantiteStock){
+    public void setQuantiteStock(String quantiteStock){
         this.quantiteStock = quantiteStock;
     }
 

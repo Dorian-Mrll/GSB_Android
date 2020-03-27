@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.Editable;
 
 public class BdAdapter {
 
@@ -43,7 +44,7 @@ public class BdAdapter {
         return null;
     }
 
-    public boolean insererEchantillon(Echantillon unEchant){
+    public boolean insertEchantillon(Echantillon unEchant){
         //Création d'un ContentValues (fonctionne comme une HashMap)
         ContentValues values = new ContentValues();
         //on lui ajoute une valeur associé à une clé (qui est le nom de la colonne où on veut mettre la valeur)
@@ -52,14 +53,23 @@ public class BdAdapter {
         values.put(COL_STOCK, unEchant.getQuantiteStock());
 
         //on insère l'objet dans la BDD via le ContentValues
-        long resultat = db.insert(TABLE_ECHANT, null, values);
-        boolean retour = true;
-        if(resultat == -1){
-            retour = false;
+        long result = db.insert(TABLE_ECHANT, null, values);
+
+        if (result == -1){
+            return false;
         }else{
-            retour = true;
+            return true;
         }
-        return retour;
+    }
+
+    public Echantillon getEchantillonWithCode(String unCode){
+
+        //Récupère dans un Cursor les valeurs correspondant à un echantillon grâce à sa designation)
+
+        Cursor c = db.query(TABLE_ECHANT, new String[] {COL_ID,COL_CODE, COL_LIB, COL_STOCK}, COL_CODE + " LIKE \"" + unCode +"\"", null, null, null, null);
+
+        return cursorToEchant(c);
+
     }
 
     public Echantillon cursorToEchant(Cursor c){ //Cette méthode permet de convertir un cursor en un echantillon
@@ -74,7 +84,7 @@ public class BdAdapter {
             //on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
             unEchant.setCode(c.getString(NUM_COL_CODE));
             unEchant.setLibelle(c.getString(NUM_COL_LIB));
-            unEchant.setQuantiteStock(c.getInt(NUM_COL_STOCK));
+            unEchant.setQuantiteStock(c.getString(NUM_COL_STOCK));
         }
 
         c.close(); //On ferme le cursor
@@ -82,14 +92,8 @@ public class BdAdapter {
         return unEchant; //On retourne l'echantillon
     }
 
-    public Echantillon getEchantillonWithLib(String unLib){
-        //Récupère dans un Cursor les valeurs correspondant à un echantillon grâce à sa designation)
-        Cursor c = db.query(TABLE_ECHANT, new String[] {COL_ID,COL_CODE, COL_LIB, COL_STOCK}, COL_LIB + " LIKE \"" + unLib +"\"", null, null, null, null);
 
-        return cursorToEchant(c);
-    }
-
-    public boolean updateEchantillon(String unCode, Echantillon unEchant){
+    public long updateEchantillon(String unCode, Echantillon unEchant){
         //La mise à jour d'un echantillon dans la BDD fonctionne plus ou moins comme une insertion
         //il faut simple préciser quel echantillon on doit mettre à jour grâce à son code
 
@@ -98,14 +102,7 @@ public class BdAdapter {
         values.put(COL_LIB, unEchant.getLibelle());
         values.put(COL_STOCK, unEchant.getQuantiteStock());
 
-        long resultat = db.update(TABLE_ECHANT, values, COL_CODE + " = \"" +unCode+"\"", null);
-        boolean retour = true;
-        if(resultat == -1){
-            retour = false;
-        }else{
-            retour = true;
-        }
-        return retour;
+        return db.update(TABLE_ECHANT, values, COL_CODE + " = \"" +unCode+"\"", null);
     }
 
     public int removeEchantillonWithCode(String unCode){
@@ -114,8 +111,18 @@ public class BdAdapter {
 
     }
 
+
     public Cursor getData(){
         return db.rawQuery("SELECT * FROM echantillons", null);
     }
+
+
+    public boolean updateAjoutEchantillon(String quantite, String code) {
+        //String qte = Integer.toString(quantite);
+        db.execSQL("UPDATE " + TABLE_ECHANT + " SET " + COL_STOCK + " = " + COL_STOCK + " + ? WHERE " + COL_CODE , new String[] {quantite, code});
+
+        return true;
+    }
+
 
 }

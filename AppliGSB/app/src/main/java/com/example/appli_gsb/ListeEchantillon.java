@@ -2,12 +2,9 @@ package com.example.appli_gsb;
 
 
         import android.database.Cursor;
-        import android.database.MatrixCursor;
         import android.os.Bundle;
         import android.view.View;
-        import android.widget.ArrayAdapter;
         import android.widget.Button;
-        import android.widget.ImageView;
         import android.widget.ListView;
         import android.widget.SimpleCursorAdapter;
         import android.widget.Toast;
@@ -25,7 +22,7 @@ public class ListeEchantillon extends AppCompatActivity {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
-                setContentView(R.layout.page_liste_echantillon);
+                setContentView(R.layout.fenetre_liste_echantillon);
 
                 mListView = (ListView) findViewById(R.id.lvListeEchant);
 
@@ -57,7 +54,7 @@ public class ListeEchantillon extends AppCompatActivity {
                 echantBdd.close();
 
 
-
+                //________________________ BOUTON QUITTER ______________________________________
 
                 Button buttonQuitter = (Button)findViewById(R.id.btnQuitterListe);
                 buttonQuitter.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +63,7 @@ public class ListeEchantillon extends AppCompatActivity {
                         public void onClick(View v) {
 
                                 // TODO Auto-generated method stub
+                                Toast.makeText(ListeEchantillon.this, "Retour !!!",Toast.LENGTH_SHORT).show();
                                 finish(); //fermeture de la fenêtre
 
                         }

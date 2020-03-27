@@ -45,10 +45,10 @@
         app:layout_constraintVertical_bias="0.848" />
 
     <Button
-        android:id="@+id/btnMajAjouter"
+        android:id="@+id/btnMajModifier"
         android:layout_width="135dp"
         android:layout_height="63dp"
-        android:text="@string/btnAjouterMaj"
+        android:text="@string/btnModifierMaj"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.148"

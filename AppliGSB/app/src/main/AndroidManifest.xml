@@ -16,8 +16,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity android:name=".AppliMenu"
             android:label="AppliMenu"
             android:parentActivityName=".MainActivity"/>
@@ -28,11 +26,11 @@
 
         <activity android:name=".ListeEchantillon"
             android:label="ListeEchantillon"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".AppliMenu"/>
 
         <activity android:name=".MajEchantillon"
             android:label="MajEchantillon"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".AppliMenu"/>
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"

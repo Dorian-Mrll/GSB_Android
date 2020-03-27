@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">Appli-GSB</string>
-    <string name="connexion_textview_login">Login</string>
-    <string name="connexion_textview_password">Password</string>
+
+    <string name="ptLogin">Login</string>
+    <string name="ptPassword">Password</string>
+    <string name="btnConnexion">SE CONNECTER</string>
+    <string name="tv_info">Login ou Mot de passe incorrecte !</string>
+    <string name="btnQuitterCon">Fermer l\'application</string>
+
 
 
     <string name="tvTitreMenu">Application de gestion des échantillons de compléments alimentaires</string>
@@ -20,13 +25,14 @@
 
     <string name="tvTitreListeEchant">Liste des Echantillons :</string>
     <string name="ivEchant"></string>
+    <string name="btnSupprimerListe">Tout supprimer</string>
     <string name="btnQuitterListe">Quitter</string>
 
 
     <string name="tvTitreMajEchant">Maj d\'un Echantillons :</string>
     <string name="etMajCode">Saisir ici un code</string>
     <string name="etMajQuantite">Saisir ici une quantite</string>
-    <string name="btnAjouterMaj">Modifier</string>
+    <string name="btnModifierMaj">Modifier</string>
     <string name="btnSupprimerMaj">Supprimer</string>
     <string name="btnQuitterMaj">Quitter</string>
 

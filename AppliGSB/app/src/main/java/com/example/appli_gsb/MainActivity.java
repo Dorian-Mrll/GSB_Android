@@ -1,179 +1,111 @@
 package com.example.appli_gsb;
 
-
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Collection;
+
 public class MainActivity extends AppCompatActivity {
 
-    private Button ajout;
-    private Button liste;
-    private Button maj;
+
+    private EditText Login;
+    private EditText Password;
+    private Button Connexion;
+    private TextView Info;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.page_menu);
+        setContentView(R.layout.fenetre_de_connexion);
 
 
-        ajout = (Button) findViewById(R.id.btnAjouterMenu);   //Appel du "button1"
-        ajout.setOnClickListener(new View.OnClickListener()      //Creation du listener sur ce bouton
+        Login = (EditText)findViewById(R.id.ptLogin);
+        Password = (EditText)findViewById(R.id.ptPassword);
+        Connexion = (Button)findViewById(R.id.btnConnexion);
 
-        {
-            /**
-             * Called when a view has been clicked.
-             *
-             * @param v The view that was clicked.
-             */
+
+
+        Connexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AjoutEchantillon.class));
+                validate(Login.getText().toString(), Password.getText().toString());
             }
-
         });
 
 
-        liste = (Button) findViewById(R.id.btnListerMenu);   //Appel du "button1"
-        liste.setOnClickListener(new View.OnClickListener()      //Creation du listener sur ce bouton
+        Button buttonQuitter = (Button)findViewById(R.id.btnQuitterCon);
+        buttonQuitter.setOnClickListener(new View.OnClickListener() {
 
-        {
-            /**
-             * Called when a view has been clicked.
-             *
-             * @param v The view that was clicked.
-             */
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ListeEchantillon.class));
+
+                // TODO Auto-generated method stub
+                Toast.makeText(MainActivity.this, "KENAVO !!!",Toast.LENGTH_SHORT).show();
+                finish(); //fermeture de la fenêtre
+
             }
 
         });
-
-
-        maj = (Button) findViewById(R.id.btnMajMenu);   //Appel du "button1"
-        maj.setOnClickListener(new View.OnClickListener()      //Creation du listener sur ce bouton
-
-        {
-            /**
-             * Called when a view has been clicked.
-             *
-             * @param v The view that was clicked.
-             */
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, MajEchantillon.class));
-            }
-
-        });
-
-
-
     }
 
-/*
 
-    public void testBd(){
+    private void validate(String login, String password){
 
-//Création d'une instance de la classe echantBDD
 
-        BdAdapter echantBdd = new BdAdapter(this);
+        try {
 
-//Création d'un Echantillon
+            // TODO Auto-generated method stub
+            Toast toast = new Toast(getApplicationContext());
 
-        Echantillon unEchant = new Echantillon("code1", "lib1", "3");
+            toast.setGravity(Gravity.CENTER_VERTICAL|Gravity.BOTTOM, 0, 250);
+            TextView tv = new TextView(MainActivity.this);
+            TextView tv2 = new TextView(MainActivity.this);
 
-//On ouvre la base de données pour écrire dedans
+            tv.setTextColor(Color.RED);
+            tv.setTextSize(20);
+            tv2.setTextColor(Color.RED);
+            tv2.setTextSize(20);
 
-        echantBdd.open();
+            Typeface t = Typeface.create("serif", Typeface.BOLD_ITALIC);
+            tv.setTypeface(t);
+            tv.setText("Le login ou le mot de passe est incorrecte !!!");
+            tv2.setTypeface(t);
+            tv2.setText("L'un deux deux champs obligatoire est vide !");
 
-//On insère l'echantillon que l'on vient de créer
 
-        echantBdd.insererEchantillon(unEchant);
 
-//System.out.println("insertion echantillon");
+            if (login.equals("") || password.equals("")){
+                toast.setView(tv2);
+                toast.show();
+            }
 
-//Pour vérifier que l'on a bien créé un echantillon dans la BDD
+            else if ((login.equals("Admin")) && (password.equals("1234"))){
+                startActivity(new Intent(MainActivity.this, AppliMenu.class));
 
-//on extrait l’echantillon de la BDD grâce au libelle de l'echantillon que l'on a créé précédemment
+            }else{
+                toast.setView(tv);
+                toast.show();
 
-        Echantillon unEchantFromBdd = echantBdd.getEchantillonWithLib("lib1");
+                Login.setText("");
+                Password.setText("");
 
-//Si un unArticle est retourné (donc si le unEchant à bien été ajouté à la BDD)
+            }
 
-        if(unEchantFromBdd != null){
-
-//On affiche les infos de l’echantillon dans un Toast
-
-            Toast.makeText(this, unEchantFromBdd.getLibelle(), Toast.LENGTH_LONG).show();
-
-            System.out.println("echantillon trouve : "+unEchantFromBdd.getLibelle());
-
-//On modifie le titre de l’echantillon
-
-            unEchantFromBdd.setLibelle("lib2");
-
-//Puis on met à jour la BDD
-
-            echantBdd.updateEchantillon(unEchantFromBdd.getCode(), unEchantFromBdd);
-
+        }catch(Exception e) {
+            Toast.makeText(MainActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
         }
+    }
 
-        else {
-
-            Toast.makeText(this, "echantillon non trouvé", Toast.LENGTH_LONG).show();
-
-            System.out.println("echantillon non trouvé");
-
-        }
-
-//On extrait l’Article de la BDD grâce à son nouveau lib
-
-        unEchantFromBdd = echantBdd.getEchantillonWithLib("Lib2");
-
-//S'il existe un Article possédant cette désignation dans la BDD
-
-        if(unEchantFromBdd != null){
-
-//On affiche les nouvelles info de l’echantillon pour vérifié que le lib de l’echantillon a bien été maj
-
-            Toast.makeText(this, unEchantFromBdd.getLibelle(), Toast.LENGTH_LONG).show();
-
-//on supprime le unEchant de la BDD grâce à son ID
-
-            echantBdd.removeEchantillonWithCode(unEchantFromBdd.getCode());
-
-        }
-
-//On essait d'extraire de nouveau l’echantillon de la BDD toujours grâce à son nouveau libelle
-
-        unEchantFromBdd = echantBdd.getEchantillonWithLib("lib2");
-
-//Si aucun unEchant n'est retourné
-
-        if(unEchantFromBdd == null){
-
-//On affiche un message indiquant que l’echantillon n'existe pas dans la BDD
-
-            Toast.makeText(this, "Cet echantillon n'existe pas dans la BDD", Toast.LENGTH_LONG).show();
-
-        }
-
-        else{ //Si l'Aechantillon existe (mais normalement il ne devrait pas)
-
-//on affiche un message indiquant que l’echantillon existe dans la BDD
-
-            Toast.makeText(this, "Cet echantillon existe dans la BDD", Toast.LENGTH_LONG).show();
-
-        }
-
-        echantBdd.close();
-
-
-
-
-}*/
 }

@@ -8,27 +8,27 @@ import android.widget.Toast;
 
 public class AjoutEchantillon extends MainActivity {
 
-
+    EditText Code;
+    EditText Libelle;
+    EditText Stock;
+    BdAdapter echantBdd = new BdAdapter(this);
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.page_ajout_echantillon);
+        setContentView(R.layout.fenetre_ajout_echantillon);
 
 
-        final EditText Code;
-        final EditText Libelle;
-        final EditText Stock;
-        final BdAdapter echantBdd = new BdAdapter(this);
 
 
         Code = (EditText) findViewById(R.id.etCodeAjout);
-        Libelle = (EditText) findViewById(R.id.etLibellleAjout);
+        Libelle = (EditText) findViewById(R.id.etLibelleAjout);
         Stock = (EditText) findViewById(R.id.etStockAjout);
 
 
 
+        //________________________ BOUTON AJOUTER ______________________________________
 
         Button btnAjouter = (Button) findViewById(R.id.btnAjouterAjout);
         btnAjouter.setOnClickListener(new View.OnClickListener() {
@@ -36,42 +36,48 @@ public class AjoutEchantillon extends MainActivity {
             public void onClick(View v) {
 
 
-                if (Code.getText().toString().equals("") || Libelle.getText().toString().equals("") || Stock.getText().toString().equals("")){
-                    Toast.makeText(AjoutEchantillon.this, "Vous avez oublié de renseigner l'un des trois, champs !",Toast.LENGTH_SHORT).show();
-                }else {
+                String code = Code.getText().toString();
+                String libelle = Libelle.getText().toString();
+                String quantite = Stock.getText().toString();
+                Echantillon echant = new Echantillon(code, libelle, quantite);
 
-                    String CvStock = Stock.getText().toString();
-                    long StockConvert = Long.valueOf(CvStock);
+                echantBdd.open();
 
-                    Echantillon echant = new Echantillon(Code.getText().toString(), Libelle.getText().toString(), (int) StockConvert);
+                try {
 
-                    echantBdd.open();
-
-                    boolean AjoutEchant = echantBdd.insererEchantillon(echant);
-
-                    if(AjoutEchant == true){
-                        Toast.makeText(AjoutEchantillon.this, "Vos données ont bien été ajoutées à la base",Toast.LENGTH_LONG).show();
-                    }else{
-                        Toast.makeText(AjoutEchantillon.this, "Erreur, données non insérées",Toast.LENGTH_LONG).show();
+                    if(code.equals("") || libelle.equals("") || quantite.equals("")){
+                        Toast.makeText(AjoutEchantillon.this, "Vous avez oublié un des champs qu'il faut obligatoirement renseigner.",Toast.LENGTH_LONG).show();
                     }
+
+                    if (echantBdd.getEchantillonWithCode(code) == null){
+                    Toast.makeText(AjoutEchantillon.this, "Attention ce code es déja utilisé, et existe dans la base !",Toast.LENGTH_LONG).show();
+                    }
+
+                    echantBdd.insertEchantillon(echant);
+                    Toast.makeText(AjoutEchantillon.this, "Votre échantillon à bien été inséré.",Toast.LENGTH_LONG).show();
 
                     Code.setText("");
                     Libelle.setText("");
                     Stock.setText("");
 
-                    echantBdd.close();
 
+                    }catch(Exception e) {
+                    Toast.makeText(AjoutEchantillon.this, e.getMessage(),Toast.LENGTH_LONG).show();
                 }
 
+                echantBdd.close();
 
             }
         });
 
 
+        //________________________ BOUTON QUITTER ______________________________________
+
         Button btnQuitter = (Button) findViewById(R.id.btnQuitterAjout);
         btnQuitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(AjoutEchantillon.this, "Retour !!!",Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
